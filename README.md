@@ -10,3 +10,5 @@ TODO
 
 - Remove blank rows
 - Identify winning state
+- width changes when there is no 9th button in a row
+- occupy less width on mobile
