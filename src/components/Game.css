@@ -3,6 +3,12 @@
     grid-auto-flow:row dense;
 }
 
+.grid-container > button > pre {
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 .grid-container > button:nth-child(9n) {
     grid-column:9;
 }

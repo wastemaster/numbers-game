@@ -194,7 +194,9 @@ export default function Game() {
                 style={{backgroundColor: item.selected? "#c9c9c9" : "#fff"}}
                 onClick={() => handleClick  (index)}
                 key={index}>
-                {item.value}
+                <pre>
+                {item.value ? item.value : <>&nbsp;</>}
+                </pre>
             </button>
             )
     })
