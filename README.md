@@ -8,9 +8,10 @@ Current deployment:
 
 TODO
 
-- Identify winning state
 - Save game state in Localstorage
+- Revert move
 - Automatic hints
+- Identify winning state ✅
 - Remove blank rows ✅
 - Width changes when there is no 9th button in a row ✅
 - Occupy less width on mobile ✅
