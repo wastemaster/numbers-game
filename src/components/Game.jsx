@@ -222,9 +222,10 @@ export default function Game() {
             </div>
             <div className="card">
                 <button onClick={handleAddMore}>Add more</button>
-                <button>Revert move</button>
                 <button onClick={handleRestart}>Restart game</button>
             </div>
         </div>
     )
 }
+
+// <button>Revert move</button>
