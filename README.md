@@ -13,3 +13,4 @@ TODO
 - Width changes when there is no 9th button in a row [DONE]
 - Occupy less width on mobile [DONE]
 - Add copyright & github link
+- Add favicon
