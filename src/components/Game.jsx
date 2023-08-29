@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import '../components/Game.css'
 
 export default function Game() {
@@ -53,7 +53,7 @@ export default function Game() {
         console.log(selectedY, selectedX)
 
         // values should match
-        if (gameBoard[currentIndex].value === gameBoard[selectedIndex].value ||
+        if (true || gameBoard[currentIndex].value === gameBoard[selectedIndex].value ||
         gameBoard[currentIndex].value + gameBoard[selectedIndex].value === 10) {
             // all good
         } else {
@@ -101,28 +101,6 @@ export default function Game() {
             return true
         }
 
-//         // same row
-//         if (currentY === selectedY) {
-//             // there are items between our items
-//             if (Math.abs(currentX - selectedX) !==1) {
-//
-//                 let [min, max] = [currentX, selectedX]
-//                 if (currentX > selectedX) {
-//                     [min, max] = [selectedX, currentX]
-//                 }
-//                 for (let i = min + 1; i < max; i ++) {
-//                     const idx = i + (currentY * 9)
-//                     if (gameBoard[idx].value !== undefined) {
-//                         return false
-//                     }
-//                     return true
-//                 }
-//
-//                 return false
-//             }
-//             return true
-//         }
-
         return false
     }
 
@@ -167,9 +145,13 @@ export default function Game() {
         })
     }
 
+    // use effect because need to check board after state change
+    useEffect(() => {
+        removeEmptyLines()
+    }, [gameBoard]);
+
+
     function handleClick(index) {
-        // console.log('current index=' + index)
-        // console.log('clicked value=' + gameBoard[index].value)
         // if empty value clicked - skip
         if (gameBoard[index].value === undefined) {
             return
@@ -181,13 +163,11 @@ export default function Game() {
             if (foundMatch(index)) {
                 // remove these items
                 resetItem(index)
-                removeEmptyLines()
             } else {
                 console.log('Not a match!')
             }
             // reset selections
             resetSelection()
-            // reset empty lines
             return
         }
 
@@ -212,6 +192,10 @@ export default function Game() {
         setGameBoard(getInitial())
     }
 
+    function getFilledCellsCount() {
+        return gameBoard.filter(item => item.value !== undefined).length
+    }
+
     const gameElements = gameBoard.map((item, index) => {
         return (
             <button
@@ -227,6 +211,12 @@ export default function Game() {
 
     return (
         <div>
+            <div>
+                <span>Cells: {gameBoard.length}</span>
+                <br />
+                <span>Filled cells: {getFilledCellsCount()}</span>
+            </div>
+            {getFilledCellsCount() === 0 && <h2>Congratulations! You won!</h2>}
             <div className="grid-container">
                 {gameElements}
             </div>
