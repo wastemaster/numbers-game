@@ -9,6 +9,7 @@ Current deployment:
 TODO
 
 - Save game state in Localstorage
+- Same cell double click bug
 - Revert move
 - Automatic hints
 - Identify winning state ✅
