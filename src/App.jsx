@@ -8,6 +8,16 @@ function App() {
     <>
       <h1>Numbers</h1>
       <Game />
+
+      <div className="note">
+         <p>
+            This is the version of <a href="https://numbers.mokoron.ru/">Numbers game</a> written with React. <a href="https://github.com/wastemaster/numbers-game">Source codes</a> are available on github.
+         </p>
+      </div>
+
+      <div className="footer">
+        &copy; 2023 Evgeny Chernyshov. All Rights Reserved
+      </div>
     </>
   )
 }
