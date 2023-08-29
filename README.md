@@ -9,9 +9,9 @@ Current deployment:
 TODO
 
 - Save game state in Localstorage
-- Same cell double click bug
 - Revert move
 - Automatic hints
+- Same cell double click bug ✅
 - Identify winning state ✅
 - Remove blank rows ✅
 - Width changes when there is no 9th button in a row ✅
