@@ -15,3 +15,4 @@ TODO
 - Add copyright & github link [DONE]
 - Add favicon [DONE]
 - Save game state in Localstorage
+- Automatic hints
