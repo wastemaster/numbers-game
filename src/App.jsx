@@ -19,7 +19,7 @@ function App() {
             This is the version of <a href="https://numbers.mokoron.ru/">Numbers game</a> written with React. <a href="https://github.com/wastemaster/numbers-game">Source codes</a> are available on github.
          </p>
          <p>
-            Version: {getVersion()}
+            Revision: {getVersion()}
          </p>
       </div>
 
