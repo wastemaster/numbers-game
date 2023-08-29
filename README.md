@@ -4,7 +4,7 @@ Numbers game built with React similar to [numbers.mokoron.ru](https://numbers.mo
 
 Current deployment:
 
-- [netlify app](https://numbers09.netlify.app/)
+- [netlify app](https://numbers91.netlify.app/)
 
 TODO
 
