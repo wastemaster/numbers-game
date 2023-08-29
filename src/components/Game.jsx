@@ -52,6 +52,11 @@ export default function Game() {
         console.log(currentY, currentX)
         console.log(selectedY, selectedX)
 
+        // does not allow click twice same cell
+        if (selectedIndex === currentIndex) {
+            return
+        }
+
         // values should match
         if (gameBoard[currentIndex].value === gameBoard[selectedIndex].value ||
         gameBoard[currentIndex].value + gameBoard[selectedIndex].value === 10) {
@@ -159,7 +164,7 @@ export default function Game() {
         // if previous selection exists
         if (selectionExists()) {
 
-            // it current item matches previously selected
+            // it current item matches with previously selected
             if (foundMatch(index)) {
                 // remove these items
                 resetItem(index)
