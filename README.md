@@ -8,12 +8,12 @@ Current deployment:
 
 TODO
 
-- Remove blank rows
 - Identify winning state
+- Save game state in Localstorage
+- Automatic hints
+- Remove blank rows [DONE]
 - Width changes when there is no 9th button in a row [DONE]
 - Occupy less width on mobile [DONE]
 - Add copyright & github link [DONE]
 - Add favicon [DONE]
-- Save game state in Localstorage
-- Automatic hints
-- Setup CI (deployemnt on netlify)
+- Setup CI (deployment on netlify) [DONE]
