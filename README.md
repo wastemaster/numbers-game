@@ -14,3 +14,4 @@ TODO
 - Occupy less width on mobile [DONE]
 - Add copyright & github link [DONE]
 - Add favicon [DONE]
+- Save game state in Localstorage
