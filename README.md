@@ -10,6 +10,7 @@ TODO
 
 - Remove blank rows
 - Identify winning state
-- Width changes when there is no 9th button in a row
-- Occupy less width on mobile
+- Width changes when there is no 9th button in a row [DONE]
+- Occupy less width on mobile [DONE]
 - Add copyright & github link
+- Add favicon
