@@ -101,27 +101,27 @@ export default function Game() {
             return true
         }
 
-        // same row
-        if (currentY === selectedY) {
-            // there are items between our items
-            if (Math.abs(currentX - selectedX) !==1) {
-
-                let [min, max] = [currentX, selectedX]
-                if (currentX > selectedX) {
-                    [min, max] = [selectedX, currentX]
-                }
-                for (let i = min + 1; i < max; i ++) {
-                    const idx = i + (currentY * 9)
-                    if (gameBoard[idx].value !== undefined) {
-                        return false
-                    }
-                    return true
-                }
-
-                return false
-            }
-            return true
-        }
+//         // same row
+//         if (currentY === selectedY) {
+//             // there are items between our items
+//             if (Math.abs(currentX - selectedX) !==1) {
+//
+//                 let [min, max] = [currentX, selectedX]
+//                 if (currentX > selectedX) {
+//                     [min, max] = [selectedX, currentX]
+//                 }
+//                 for (let i = min + 1; i < max; i ++) {
+//                     const idx = i + (currentY * 9)
+//                     if (gameBoard[idx].value !== undefined) {
+//                         return false
+//                     }
+//                     return true
+//                 }
+//
+//                 return false
+//             }
+//             return true
+//         }
 
         return false
     }
@@ -134,12 +134,28 @@ export default function Game() {
         }
     }
 
+    function removeEmptyLines() {
+        // remove one empty line
+        const chunkSize = 9;
+        for (let i = 0; i < gameBoard.length; i += chunkSize) {
+            const chunk = gameBoard.slice(i, i + chunkSize);
+            const filtered = chunk.filter(item => item.value === undefined)
+            if (filtered.length === 9) {
+                setGameBoard(prevGameBoard => {
+                    return prevGameBoard.slice(0, i).concat(
+                        prevGameBoard.slice(i + 9)
+                    )
+                })
+                break
+            }
+        }
+    }
 
     function resetItem(index) {
         // remove previously selected item
         const selectedIndex = getSelectedIndex()
 
-        // remove current item
+        // remove current and selected item
         setGameBoard(prevGameBoard => {
             return prevGameBoard.map((item, idx) => {
                 return (
@@ -152,22 +168,30 @@ export default function Game() {
     }
 
     function handleClick(index) {
-         console.log('current index=' + index)
-
+        // console.log('current index=' + index)
+        // console.log('clicked value=' + gameBoard[index].value)
+        // if empty value clicked - skip
+        if (gameBoard[index].value === undefined) {
+            return
+        }
         // if previous selection exists
         if (selectionExists()) {
 
-            // reset selections
+            // it current item matches previously selected
             if (foundMatch(index)) {
+                // remove these items
                 resetItem(index)
+                removeEmptyLines()
             } else {
                 console.log('Not a match!')
             }
-
+            // reset selections
             resetSelection()
+            // reset empty lines
             return
         }
 
+        // select current item
         setGameBoard(prevGameBoard => {
             return prevGameBoard.map((item, idx) => (
                 idx === index ?
