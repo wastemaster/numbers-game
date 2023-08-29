@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import '../components/Game.css'
+import { Button, Popup } from 'semantic-ui-react'
+
 
 export default function Game() {
 
@@ -214,6 +216,17 @@ export default function Game() {
             )
     })
 
+    const gameRules = (
+        <div>
+            <p>The goal of the game is to cross out all the numbers.</p>
+            <p>You can cross out any identical or giving a total of 10 numbers, standing next to each other horizontally or vertically.</p>
+            <p>You can cross out the last in a line with the first in the next line if they are the same or add up to 10.</p>
+            <p>Numbers that have been crossed out no longer count.</p>
+            <p>Example: there is 1 * * 1, where * is a crossed out number, in this case it is considered that the ones are next to each other and can be crossed out.</p>
+            <p>If there are no more moves, you must click on "Add more", All numbers will automatically be rewritten down and you can continue to play.</p>
+        </div>
+    )
+
     return (
         <div>
             <div>
@@ -226,8 +239,18 @@ export default function Game() {
                 {gameElements}
             </div>
             <div className="card">
-                <button onClick={handleAddMore}>Add more</button>
-                <button onClick={handleRestart}>Restart game</button>
+                <button className="ui button" onClick={handleAddMore}>Add more</button>
+                <button className="ui button" onClick={handleRestart}>Restart game</button>
+
+                <Popup
+                  content={gameRules}
+                  wide
+                  on='click'
+                  pinned
+                  position='top center'
+                  trigger={<Button content='Game rules' />}
+                />
+
             </div>
         </div>
     )

@@ -15,10 +15,11 @@
   padding: 2em;
 }
 
-.card > button {
+.card > button.ui.button {
     padding: 10px 20px;
     margin: 5px 10px;
 }
+
 .read-the-docs {
   color: #888;
 }
