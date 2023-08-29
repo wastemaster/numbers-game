@@ -16,3 +16,4 @@ TODO
 - Add favicon [DONE]
 - Save game state in Localstorage
 - Automatic hints
+- Setup CI (deployemnt on netlify)
