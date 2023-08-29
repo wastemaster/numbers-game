@@ -53,7 +53,7 @@ export default function Game() {
         console.log(selectedY, selectedX)
 
         // values should match
-        if (true || gameBoard[currentIndex].value === gameBoard[selectedIndex].value ||
+        if (gameBoard[currentIndex].value === gameBoard[selectedIndex].value ||
         gameBoard[currentIndex].value + gameBoard[selectedIndex].value === 10) {
             // all good
         } else {
