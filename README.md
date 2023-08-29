@@ -1,8 +1,15 @@
-# React + Vite
+# Numbers game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Numbers game built with React similar to [numbers.mokoron.ru](https://numbers.mokoron.ru/)
 
-Currently, two official plugins are available:
+Current deployment:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [netlify app](https://numbers09.netlify.app/)
+
+TODO
+
+- Remove blank rows
+- Identify winning state
+- Width changes when there is no 9th button in a row
+- Occupy less width on mobile
+- Add copyright & github link
