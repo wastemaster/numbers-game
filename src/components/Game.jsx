@@ -250,7 +250,7 @@ export default function Game() {
     })
 
     function itemsMatch(sourceIndex, targetIndex) {
-        console.log('itemsMatch')
+        // console.log('itemsMatch')
         if (gameBoard[sourceIndex].value === gameBoard[targetIndex].value ||
         gameBoard[sourceIndex].value + gameBoard[targetIndex].value === 10) {
             // console.log('found match: ' + sourceIndex + " " + targetIndex)
@@ -263,17 +263,6 @@ export default function Game() {
         // remove hints from board
         setGameBoard(prevGameBoard => prevGameBoard.map(item => {
             return {...item, hinted: false}
-        }))
-    }
-
-    function placeHints(first, second) {
-        // place hints and first index position and in second index position
-        setGameBoard(prevGameBoard => prevGameBoard.map((item, idx) => {
-            return (
-                (idx === first || idx === second) ?
-                {...item, hinted: true} :
-                item
-            )
         }))
     }
 
@@ -344,7 +333,7 @@ export default function Game() {
         } else {
             removeHints()
         }
-    }, [gameBoard.filter(item => item.value !== undefined).length, showHints]);
+    }, [gameBoard.filter(item => item.value !== undefined).length, showHints, gameBoard.length]);
 
     const gameRules = (
         <div>
