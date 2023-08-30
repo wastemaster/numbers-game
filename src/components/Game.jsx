@@ -248,27 +248,48 @@ export default function Game() {
     }
 
     function removeHints() {
+        // remove hints from board
         setGameBoard(prevGameBoard => prevGameBoard.map(item => {
             return {...item, hinted: false}
         }))
     }
 
+    function placeHints(first, second) {
+        // place hints and first index position and in second index position
+        setGameBoard(prevGameBoard => prevGameBoard.map((item, idx) => {
+            return (
+                (idx === first || idx === second) ?
+                {...item, hinted: true} :
+                item
+            )
+        }))
+    }
+
     function handleShowHint() {
+        // show hint handler
         for(let i=0; i < gameBoard.length; i++) {
             if (gameBoard[i].value !== undefined) {
                 console.log('hint: checking item ' +i)
+                // checking for horizontal hints
                 for(let j=i + 1; j < gameBoard.length; j++) {
                     if (gameBoard[j].value === undefined) {
                         continue
                     }
                     if (itemsMatch(i, j)) {
-                        setGameBoard(prevGameBoard => prevGameBoard.map((item, idx) => {
-                            return (
-                                (idx === i || idx === j) ?
-                                {...item, hinted: true} :
-                                item
-                            )
-                        }))
+                        placeHints(i, j)
+                        break
+                    }
+                    break
+                }
+
+                // checking for vertical hints
+                for(let j=i + 9; j < gameBoard.length; j+=9) {
+                    console.log('vert comparing ' + i + " " + j)
+                    if (gameBoard[j].value === undefined) {
+                        continue
+                    }
+                    if (itemsMatch(i, j)) {
+                        placeHints(i, j)
                         break
                     }
                     break
