@@ -10,8 +10,8 @@ TODO
 
 - Save game state in Localstorage
 - Revert move
-- Vetical cleaning bug
 - Smart hint removal
+- Vetical cleaning bug ✅
 - Vertical automatic hints ✅
 - Horizontal automatic hints ✅
 - Add more should skip empty cells at the end of board ✅
