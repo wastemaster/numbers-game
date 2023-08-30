@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import '../components/Game.css'
-import { Button, Popup } from 'semantic-ui-react'
+import { Button, Popup, Icon } from 'semantic-ui-react'
 
 
 export default function Game() {
 
     function getInitial() {
+        // load initial state of the board
         const items = []
         const item = {selected:false, hinted:false}
 
@@ -25,6 +26,7 @@ export default function Game() {
     }
 
     const [gameBoard, setGameBoard] = useState(getInitial())
+    const [showHints, setShowHints] = useState(false)
 
     function selectionExists() {
         // Checks if something was previously selected
@@ -65,8 +67,8 @@ export default function Game() {
         const [currentY, currentX] = getCoordinates(currentIndex)
         const [selectedY, selectedX] = getCoordinates(selectedIndex)
 
-        console.log(currentY, currentX)
-        console.log(selectedY, selectedX)
+        //console.log(currentY, currentX)
+        //console.log(selectedY, selectedX)
 
         // does not allow click twice same cell
         if (selectedIndex === currentIndex) {
@@ -77,7 +79,7 @@ export default function Game() {
         if (itemsMatch(currentIndex, selectedIndex)) {
             // all good
         } else {
-            console.log('Values are not paired')
+            // console.log('Values are not paired')
             return false
         }
 
@@ -87,10 +89,10 @@ export default function Game() {
         if (selectedIndex > currentIndex) {
             [min, max] = [currentIndex, selectedIndex]
         }
-        console.log(`min max: ${min} ${max}`)
+        // console.log(`min max: ${min} ${max}`)
         let goodMatch = true
         for (let j = min + 1; j < max; j++) {
-            console.log(`pos: ${j} ${gameBoard[j].value}`)
+            // console.log(`pos: ${j} ${gameBoard[j].value}`)
             if (gameBoard[j].value !== undefined) {
                 goodMatch = false
                 break
@@ -105,7 +107,7 @@ export default function Game() {
 
             let goodMatch = true
             for (let j = min + 9; j < max; j+=9) {
-                console.log(`Vpos: ${j} ${gameBoard[j].value}`)
+                // console.log(`Vpos: ${j} ${gameBoard[j].value}`)
                 if (gameBoard[j].value !== undefined) {
                     goodMatch = false
                 }
@@ -127,6 +129,7 @@ export default function Game() {
     }
 
     function removeEmptyLines() {
+        console.log('removeEmptyLines')
         // remove one empty line
         const chunkSize = 9;
         for (let i = 0; i < gameBoard.length; i += chunkSize) {
@@ -152,18 +155,12 @@ export default function Game() {
             return prevGameBoard.map((item, idx) => {
                 return (
                     idx === index || idx === selectedIndex ?
-                    {...item, value: undefined, hinted: false} :
+                    {...item, value: undefined} :
                     item
                 )
             })
         })
     }
-
-    // use effect because need to check board after state change
-    useEffect(() => {
-        removeEmptyLines()
-    }, [gameBoard]);
-
 
     function handleClick(index) {
         // if empty value clicked - skip
@@ -178,7 +175,7 @@ export default function Game() {
                 // remove these items
                 resetItem(index)
             } else {
-                console.log('Not a match!')
+                // console.log('Not a match!')
             }
             // reset old selection and select new cell
             reSelection(index)
@@ -205,8 +202,7 @@ export default function Game() {
     function handleAddMore() {
         // add all the numbers again
         resetSelection()
-        // hide hints
-        removeHints()
+
         setGameBoard(prevGameBoard => {
             // clean board tail - do not count empty cell at the end
             const cleanedGameBoard = []
@@ -254,10 +250,10 @@ export default function Game() {
     })
 
     function itemsMatch(sourceIndex, targetIndex) {
-        console.log('comparing ' + sourceIndex + " " + targetIndex)
+        console.log('itemsMatch')
         if (gameBoard[sourceIndex].value === gameBoard[targetIndex].value ||
         gameBoard[sourceIndex].value + gameBoard[targetIndex].value === 10) {
-            console.log('found match: ' + sourceIndex + " " + targetIndex)
+            // console.log('found match: ' + sourceIndex + " " + targetIndex)
             return true
         }
         return false
@@ -281,18 +277,20 @@ export default function Game() {
         }))
     }
 
-    function handleShowHint() {
-        // show hint handler
+    function renderHints() {
+        console.log('renderHints')
+        let hints = []
         for(let i=0; i < gameBoard.length; i++) {
             if (gameBoard[i].value !== undefined) {
-                console.log('hint: checking item ' +i)
+                // console.log('hint: checking item ' +i)
                 // checking for horizontal hints
                 for(let j=i + 1; j < gameBoard.length; j++) {
                     if (gameBoard[j].value === undefined) {
                         continue
                     }
                     if (itemsMatch(i, j)) {
-                        placeHints(i, j)
+                        hints.push(i)
+                        hints.push(j)
                         break
                     }
                     break
@@ -300,19 +298,53 @@ export default function Game() {
 
                 // checking for vertical hints
                 for(let j=i + 9; j < gameBoard.length; j+=9) {
-                    console.log('vert comparing ' + i + " " + j)
+                    // console.log('vert comparing ' + i + " " + j)
                     if (gameBoard[j].value === undefined) {
                         continue
                     }
                     if (itemsMatch(i, j)) {
-                        placeHints(i, j)
+                        hints.push(i)
+                        hints.push(j)
                         break
                     }
                     break
                 }
             }
         }
+        // unique hint indexes
+        const uniqueHints = [...new Set(hints)]
+        for (let i =0; i < uniqueHints.length; i ++) {
+            console.log(uniqueHints[i])
+        }
+        setGameBoard(prevGameBoard => {
+            return prevGameBoard.map((item, idx) => {
+                return (
+                    hints.includes(idx) ?
+                    {...item, hinted: true} :
+                    {...item, hinted: false}
+                )
+            })
+        })
     }
+
+    function handleShowHint() {
+        // show hint handler
+        setShowHints(prevShowHints => !prevShowHints)
+    }
+
+    // use effect for removing empty lines
+    useEffect(() => {
+        removeEmptyLines()
+    }, [gameBoard.filter(item => item.value !== undefined).length]);
+
+    // use effect for hints
+    useEffect(() => {
+        if (showHints) {
+            renderHints()
+        } else {
+            removeHints()
+        }
+    }, [gameBoard.filter(item => item.value !== undefined).length, showHints]);
 
     const gameRules = (
         <div>
@@ -337,9 +369,20 @@ export default function Game() {
                 {gameElements}
             </div>
             <div className="card">
-                <button className="ui button" onClick={handleAddMore}>Add more</button>
-                <button className="ui button" onClick={handleShowHint}>Show hints</button>
-                <button className="ui button" onClick={handleRestart}>Restart game</button>
+                <Button className="ui button" onClick={handleAddMore} icon labelPosition='left'>
+                    <Icon name='plus' />
+                    Add more
+                </Button>
+
+                <Button toggle active={showHints} className="ui button" onClick={handleShowHint} icon labelPosition='left'>
+                    <Icon name='user secret' />
+                    Show hints
+                </Button>
+
+                <Button className="ui button" onClick={handleRestart} icon labelPosition='left'>
+                    <Icon name='sync' />
+                    Restart
+                </Button>
 
                 <Popup
                   content={gameRules}
@@ -347,7 +390,7 @@ export default function Game() {
                   on='click'
                   pinned
                   position='top center'
-                  trigger={<Button content='Game rules' />}
+                  trigger={<Button icon labelPosition='left'><Icon name='newspaper outline' />Game rules</Button>}
                 />
 
             </div>
