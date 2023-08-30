@@ -24,7 +24,7 @@
 }
 
 button.game--cell:hover {
-    background-color: #e0e1e2 !important;
+    background-color: #e0e1e2;
 }
 
 .hinted--cell {
