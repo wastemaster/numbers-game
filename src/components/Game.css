@@ -1,6 +1,7 @@
 .grid-container {
     display: grid;
     grid-auto-flow:row dense;
+    grid-gap: 5px;
 }
 
 .grid-container > button > pre {
@@ -12,3 +13,26 @@
 .grid-container > button:nth-child(9n) {
     grid-column:9;
 }
+
+.game--cell {
+  border-radius: 8px;
+  border: 0px solid transparent;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  transition: outline-color 0.5s, background-color 0.5s;
+  outline: 0px solid transparent;
+}
+
+button.game--cell:hover {
+    background-color: #e0e1e2 !important;
+}
+
+.hinted--cell {
+    outline: 2px dashed #2dd5ae;
+}
+
+.selected--cell {
+    background-color: #c9c9c9;
+}
+
+

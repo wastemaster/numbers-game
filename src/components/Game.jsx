@@ -7,7 +7,7 @@ export default function Game() {
 
     function getInitial() {
         const items = []
-        const item = {selected:false}
+        const item = {selected:false, hinted:false}
 
         for (let i = 1; i < 19 + 1; i ++) {
             if (i == 10) {
@@ -60,8 +60,7 @@ export default function Game() {
         }
 
         // values should match
-        if (gameBoard[currentIndex].value === gameBoard[selectedIndex].value ||
-        gameBoard[currentIndex].value + gameBoard[selectedIndex].value === 10) {
+        if (itemsMatch(currentIndex, selectedIndex)) {
             // all good
         } else {
             console.log('Values are not paired')
@@ -145,7 +144,7 @@ export default function Game() {
             return prevGameBoard.map((item, idx) => {
                 return (
                     idx === index || idx === selectedIndex ?
-                    {...item, value: undefined} :
+                    {...item, value: undefined, hinted: false} :
                     item
                 )
             })
@@ -190,6 +189,8 @@ export default function Game() {
     function handleAddMore() {
         // add all the numbers again
         resetSelection()
+        // hide hints
+        removeHints()
         setGameBoard(prevGameBoard => {
             // clean board tail - do not count empty cell at the end
             const cleanedGameBoard = []
@@ -217,9 +218,16 @@ export default function Game() {
     }
 
     const gameElements = gameBoard.map((item, index) => {
+        let cellClasses = "game--cell"
+        if (item.hinted) {
+            cellClasses = cellClasses + " hinted--cell"
+        }
+        if (item.selected) {
+            cellClasses = cellClasses + " selected--cell"
+        }
         return (
             <button
-                style={{backgroundColor: item.selected? "#c9c9c9" : "#fff"}}
+                className={cellClasses}
                 onClick={() => handleClick  (index)}
                 key={index}>
                 <pre>
@@ -228,6 +236,46 @@ export default function Game() {
             </button>
             )
     })
+
+    function itemsMatch(sourceIndex, targetIndex) {
+        console.log('comparing ' + sourceIndex + " " + targetIndex)
+        if (gameBoard[sourceIndex].value === gameBoard[targetIndex].value ||
+        gameBoard[sourceIndex].value + gameBoard[targetIndex].value === 10) {
+            console.log('found match: ' + sourceIndex + " " + targetIndex)
+            return true
+        }
+        return false
+    }
+
+    function removeHints() {
+        setGameBoard(prevGameBoard => prevGameBoard.map(item => {
+            return {...item, hinted: false}
+        }))
+    }
+
+    function handleShowHint() {
+        for(let i=0; i < gameBoard.length; i++) {
+            if (gameBoard[i].value !== undefined) {
+                console.log('hint: checking item ' +i)
+                for(let j=i + 1; j < gameBoard.length; j++) {
+                    if (gameBoard[j].value === undefined) {
+                        continue
+                    }
+                    if (itemsMatch(i, j)) {
+                        setGameBoard(prevGameBoard => prevGameBoard.map((item, idx) => {
+                            return (
+                                (idx === i || idx === j) ?
+                                {...item, hinted: true} :
+                                item
+                            )
+                        }))
+                        break
+                    }
+                    break
+                }
+            }
+        }
+    }
 
     const gameRules = (
         <div>
@@ -253,6 +301,7 @@ export default function Game() {
             </div>
             <div className="card">
                 <button className="ui button" onClick={handleAddMore}>Add more</button>
+                <button className="ui button" onClick={handleShowHint}>Show hints</button>
                 <button className="ui button" onClick={handleRestart}>Restart game</button>
 
                 <Popup
