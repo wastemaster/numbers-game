@@ -188,10 +188,23 @@ export default function Game() {
         })}
 
     function handleAddMore() {
+        // add all the numbers again
         resetSelection()
         setGameBoard(prevGameBoard => {
+            // clean board tail - do not count empty cell at the end
+            const cleanedGameBoard = []
+            let isEmptyTail = true
+            for (let i=prevGameBoard.length - 1; i >= 0 ; i--) {
+                if (isEmptyTail && prevGameBoard[i].value === undefined) {
+                    continue
+                } else {
+                    cleanedGameBoard.push(prevGameBoard[i])
+                    isEmptyTail = false
+                }
+            }
+            // find non empty lines and add them to original set
             const newItems = prevGameBoard.filter(item => item.value !== undefined)
-            return prevGameBoard.concat(newItems)
+            return cleanedGameBoard.toReversed().concat(newItems)
         })
     }
 
