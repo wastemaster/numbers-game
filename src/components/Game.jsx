@@ -39,9 +39,23 @@ export default function Game() {
     }
 
     function resetSelection() {
+        // reset all selections
         setGameBoard(prevGameBoard => {
             return prevGameBoard.map(item => {
                 return {...item, selected: false}
+            })
+        })
+    }
+
+    function reSelection(index) {
+        // reset previous and select new
+        setGameBoard(prevGameBoard => {
+            return prevGameBoard.map((item, idx) => {
+                return (
+                    (idx === index && item.value !== undefined) ?
+                    {...item, selected: true} :
+                    {...item, selected: false}
+                )
             })
         })
     }
@@ -79,32 +93,26 @@ export default function Game() {
             console.log(`pos: ${j} ${gameBoard[j].value}`)
             if (gameBoard[j].value !== undefined) {
                 goodMatch = false
+                break
             }
         }
         if (goodMatch) {
             return true
         }
 
-
-
         // same column
         if (currentX === selectedX) {
-            // there are items between our items
-            if (Math.abs(currentY - selectedY) !==1) {
-                let [min, max] = [currentY, selectedY]
-                if (currentY > selectedY) {
-                    [min, max] = [selectedY, currentY]
+
+            let goodMatch = true
+            for (let j = min + 9; j < max; j+=9) {
+                console.log(`Vpos: ${j} ${gameBoard[j].value}`)
+                if (gameBoard[j].value !== undefined) {
+                    goodMatch = false
                 }
-                for (let i = min + 1; i < max; i ++) {
-                    const idx = currentX + (i * 9)
-                    if (gameBoard[idx].value !== undefined) {
-                        return false
-                    }
-                    return true
-                }
-                return false
             }
-            return true
+            if (goodMatch) {
+                return true
+            }
         }
 
         return false
@@ -172,10 +180,16 @@ export default function Game() {
             } else {
                 console.log('Not a match!')
             }
-            // reset selections
-            resetSelection()
+            // reset old selection and select new cell
+            reSelection(index)
             return
         }
+
+        // select current item
+        selectCell(index)
+    }
+
+    function selectCell(index) {
 
         // select current item
         setGameBoard(prevGameBoard => {
@@ -184,7 +198,9 @@ export default function Game() {
                 {...item, selected: !item.selected } :
                 item
                 ))
-        })}
+        })
+
+    }
 
     function handleAddMore() {
         // add all the numbers again
@@ -338,5 +354,3 @@ export default function Game() {
         </div>
     )
 }
-
-// <button>Revert move</button>
