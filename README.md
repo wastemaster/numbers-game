@@ -10,7 +10,8 @@ TODO
 
 - Save game state in Localstorage
 - Revert move
-- Smart hint removal
+- Smart hint removal ✅
+- hint removal bug on line removal ✅
 - Vetical cleaning bug ✅
 - Vertical automatic hints ✅
 - Horizontal automatic hints ✅
