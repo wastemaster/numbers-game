@@ -8,8 +8,8 @@ Current deployment:
 
 TODO
 
-- Save game state in Localstorage
 - Revert move
+- Save game state in Localstorage ✅
 - Smart hint removal ✅
 - hint removal bug on line removal ✅
 - Vetical cleaning bug ✅
