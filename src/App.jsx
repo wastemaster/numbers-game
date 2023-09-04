@@ -29,10 +29,28 @@ function App() {
         return items
     }
 
-    const [gameBoard, setGameBoard] = useState(getInitial())
-    const [showHints, setShowHints] = useState(false)
+    function saveGameBoard() {
+        localStorage.setItem("board", JSON.stringify(gameBoard))
+        localStorage.setItem("show_stats", JSON.stringify(showStats))
+        localStorage.setItem("show_hints", JSON.stringify(showHints))
+    }
+
+    function loadGameBoard() {
+        return JSON.parse(localStorage.getItem("board")) || getInitial()
+    }
+
+    function loadShowStats() {
+        return JSON.parse(localStorage.getItem("show_stats")) || false
+    }
+
+    function loadShowHints() {
+        return JSON.parse(localStorage.getItem("show_hints")) || false
+    }
+
+    const [gameBoard, setGameBoard] = useState(() => loadGameBoard())
+    const [showHints, setShowHints] = useState(() => loadShowHints())
     const [stats, setStats] = useState({})
-    const [showStats, setShowStats] = useState(false)
+    const [showStats, setShowStats] = useState(() => loadShowStats())
 
     function selectionExists() {
         // Checks if something was previously selected
@@ -352,6 +370,8 @@ function App() {
     // use effect for removing empty lines
     useEffect(() => {
         removeEmptyLines()
+        updateStats()
+        saveGameBoard()
     }, [gameBoard.filter(item => item.value !== undefined).length]);
 
     // use effect for hints
@@ -362,10 +382,6 @@ function App() {
             removeHints()
         }
     }, [gameBoard.filter(item => item.value !== undefined).length, showHints, gameBoard.length]);
-
-    useEffect(() => {
-        updateStats()
-    }, [gameBoard.filter(item => item.value !== undefined).length])
 
   return (
     <div className="main--container">
